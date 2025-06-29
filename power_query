@@ -1,0 +1,58 @@
+let
+    Origen = Excel.Workbook(File.Contents("C:\0-Pablo\PABLO\Pablo\Desktop\Cursos\Power BI\Proyecto2_Indicadores_Mundiales\Population.xlsx"), null, true),
+    Population_Sheet = Origen{[Item="Population",Kind="Sheet"]}[Data],
+    #"Encabezados promovidos" = Table.PromoteHeaders(Population_Sheet, [PromoteAllScalars=true]),
+    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Country", type text}, {"Population", Int64.Type}}),
+    #"Columna condicional agregada" = Table.AddColumn(#"Tipo cambiado", "Personalizado", each if [Population] < 1000000 then "0-1M" else if [Population] < 10000000 then "1M-10M" else if [Population] < 100000000 then "10M-100M" else "+100M"),
+    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Columna condicional agregada",{{"Personalizado", "Tamaño paises"}, {"Population", "Población"}}),
+    #"Columna condicional agregada1" = Table.AddColumn(#"Columnas con nombre cambiado", "Orden", each if [Tamaño paises] = "0-1M" then 1 else if [Tamaño paises] = "1M-10M" then 2 else if [Tamaño paises] = "10M-100M" then 3 else 4)
+in
+    #"Columna condicional agregada1"
+
+
+    let
+    Origen = Excel.Workbook(File.Contents("C:\0-Pablo\PABLO\Pablo\Desktop\Cursos\Power BI\Proyecto2_Indicadores_Mundiales\Countries.xlsx"), null, true),
+    Countries_Sheet = Origen{[Item="Countries",Kind="Sheet"]}[Data],
+    #"Tipo cambiado" = Table.TransformColumnTypes(Countries_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+    #"Encabezados promovidos" = Table.PromoteHeaders(#"Tipo cambiado", [PromoteAllScalars=true]),
+    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Country Code", type text}, {"Country", type text}, {"Continent", type text}})
+in
+    #"Tipo cambiado1"
+
+
+    let
+    Origen = Excel.Workbook(File.Contents("C:\0-Pablo\PABLO\Pablo\Desktop\Cursos\Power BI\Proyecto2_Indicadores_Mundiales\Paises.xlsx"), null, true),
+    Paises_Sheet = Origen{[Item="Paises",Kind="Sheet"]}[Data],
+    #"Tipo cambiado" = Table.TransformColumnTypes(Paises_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+    #"Encabezados promovidos" = Table.PromoteHeaders(#"Tipo cambiado", [PromoteAllScalars=true]),
+    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Codigo Pais", type text}, {"Pais", type text}, {"Continente", type text}})
+in
+    #"Tipo cambiado1"
+
+
+    let
+    Origen = Excel.Workbook(File.Contents("C:\0-Pablo\PABLO\Pablo\Desktop\Cursos\Power BI\Proyecto2_Indicadores_Mundiales\Infant+death+rate.xlsx"), null, true),
+    #"Infant death rate_Sheet" = Origen{[Item="Infant death rate",Kind="Sheet"]}[Data],
+    #"Encabezados promovidos" = Table.PromoteHeaders(#"Infant death rate_Sheet", [PromoteAllScalars=true]),
+    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Country", type text}, {"Infant mortality", type number}}),
+    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Tipo cambiado",{{"Infant mortality", "Mortalidad infantil"}}),
+    #"Columna condicional agregada" = Table.AddColumn(#"Columnas con nombre cambiado", "Mortalidad infantil (Muertes/1000 niños)", each if [Mortalidad infantil] <= 10 then "0 a 10" else if [Mortalidad infantil] <= 25 then "10 a 25" else if [Mortalidad infantil] <= 50 then "25 a 50" else "+ 50"),
+    #"Tipo cambiado2" = Table.TransformColumnTypes(#"Columna condicional agregada",{{"Mortalidad infantil (Muertes/1000 niños)", type text}}),
+    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Tipo cambiado2",{{"Mortalidad infantil (Muertes/1000 niños)", type text}}),
+    #"Columna condicional agregada1" = Table.AddColumn(#"Tipo cambiado1", "Personalizado", each if [#"Mortalidad infantil (Muertes/1000 niños)"] = "0 a 10" then 1 else if [#"Mortalidad infantil (Muertes/1000 niños)"] = "10 a 25" then 2 else if [#"Mortalidad infantil (Muertes/1000 niños)"] = "25 a 50" then 3 else 4)
+in
+    #"Columna condicional agregada1"
+
+
+
+    let
+    Origen = Excel.Workbook(File.Contents("C:\0-Pablo\PABLO\Pablo\Desktop\Cursos\Power BI\Proyecto2_Indicadores_Mundiales\Life+expectancy.xlsx"), null, true),
+    #"Life expectancy_Sheet" = Origen{[Item="Life expectancy",Kind="Sheet"]}[Data],
+    #"Encabezados promovidos" = Table.PromoteHeaders(#"Life expectancy_Sheet", [PromoteAllScalars=true]),
+    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Country", type text}, {"Life Expectancy", type number}}),
+    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Tipo cambiado",{{"Life Expectancy", "Esperanza de vida"}}),
+    #"Columna condicional agregada" = Table.AddColumn(#"Columnas con nombre cambiado", "Esperanza de vida (Años promedio)", each if [Esperanza de vida] <= 60 then "0 a 60" else if [Esperanza de vida] <= 70 then "60 a 70" else if [Esperanza de vida] <= 80 then "70 a 80 " else "+ 80"),
+    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Columna condicional agregada",{{"Esperanza de vida (Años promedio)", type text}}),
+    #"Columna condicional agregada1" = Table.AddColumn(#"Tipo cambiado1", "Personalizado", each if [#"Esperanza de vida (Años promedio)"] = "0 a 60" then 1 else if [#"Esperanza de vida (Años promedio)"] = "60 a 70" then 2 else if [#"Esperanza de vida (Años promedio)"] = "70 a 80" then 3 else 4)
+in
+    #"Columna condicional agregada1"
