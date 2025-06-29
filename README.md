@@ -62,19 +62,26 @@ indicadores-mundiales-powerbi/
 │
 
 ├─ Data/
+
 │ ├─ Countries.xlsx
+
 │ └─ Infant+death+rate.xlsx
+
 │ └─ Life+expectancy.xlsx
+
 │ └─ Paises.xlsx
+
 │ └─ Population.xlsx
 
 ├─ Powerbi/
 
 │ └─ Proyecto2_Indicadores_Mundiales.pbix
 │
+
 ├─ power_query/
 │
 │
+
 ├─ Visualizaciones/
 
 │ └─ captura_dashboard.png
